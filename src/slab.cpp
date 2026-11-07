@@ -44,9 +44,11 @@ void kernel_free(void* data, size_t size) {
 
 /*
     Errors out if the provided condition ends up as FALSE, otherwise it will return!
-    NOTE: its a macro because THAT was easier!
 */
-#define kernel_assert(a) (assert(a))
+template<typename T>
+void kernel_assert(T a) {
+  assert(a);
+}
 
 /*
     PrintF-like interface that logs to the kernel's console
@@ -70,7 +72,7 @@ void *kernel_memset(void *__s, int __c, size_t __n) {
 
 /* KERNEL API END */
 
-#define PAGE_ALIGN(x) ((((x)+4095)/4096) * 4096)
+constexpr uint64_t PAGE_ALIGN(uint64_t x) {return (((x)+4095)/4096) * 4096;}
 
 /* 
  * NOTE: the below implementation is a slightly modifed version of the Linux one: 
@@ -123,7 +125,7 @@ static void list_remove(struct list* list) {
 struct slab; // predefine the slab struct
 
 // single slab cache struct
-typedef struct Cache {
+struct Cache {
     // linker list to:
     // - fully filled blocks     => blocks with no available memory
     // - partially filled blocks => blocks with partially available memory
@@ -143,7 +145,7 @@ typedef struct Cache {
     size_t objs_per_slab;
 };
 
-typedef struct Slab { 
+struct Slab { 
     struct list list;
     Cache* cache; // Cache it belongs to
     void* memory;
