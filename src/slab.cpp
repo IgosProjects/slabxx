@@ -1,5 +1,5 @@
 /*
-    This file is open to the public domain!
+    This file is licensed under the MIT license!
     DESC: malloc test impl, use this as like a tutorial on how to make a malloc in your kernel
 */
 
